@@ -33,65 +33,77 @@ class MyVaultScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final orb = orbs[index];
                 final color = orb.emotion.color;
-                return Material(
-                  color: AppColors.deepCharcoal,
-                  borderRadius: BorderRadius.circular(16),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(16),
-                    onTap: () => showOrbDetailDialog(context, orb),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: color.withValues(alpha: 0.75)),
+                const outerRadius = 16.0;
+                const borderWidth = 1.5;
+                return DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(outerRadius),
+                    border: Border.all(color: color, width: borderWidth),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(borderWidth),
+                    child: Material(
+                      color: AppColors.deepCharcoal,
+                      borderRadius: BorderRadius.circular(
+                        outerRadius - borderWidth,
                       ),
-                      padding: const EdgeInsets.fromLTRB(14, 12, 6, 12),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 16,
-                            height: 16,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: color,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: color.withValues(alpha: 0.8),
-                                  blurRadius: 10,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  orb.title,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  '${orb.emotion.label} · ${formatOrbTime(orb.createdAt)}',
-                                  style: TextStyle(
-                                    color: AppColors.starlightWhite.withValues(
-                                      alpha: 0.75,
+                      clipBehavior: Clip.antiAlias,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(
+                          outerRadius - borderWidth,
+                        ),
+                        onTap: () => showOrbDetailDialog(context, orb),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(14, 12, 6, 12),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 16,
+                                height: 16,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: color,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: color.withValues(alpha: 0.8),
+                                      blurRadius: 10,
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      orb.title,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '${orb.emotion.label} · ${formatOrbTime(orb.createdAt)}',
+                                      style: TextStyle(
+                                        color: AppColors.starlightWhite
+                                            .withValues(alpha: 0.75),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              IconButton(
+                                tooltip: '收回',
+                                onPressed: () =>
+                                    confirmAndDeleteOrb(context, orb),
+                                icon: const Icon(Icons.delete_outline),
+                              ),
+                            ],
                           ),
-                          IconButton(
-                            tooltip: '收回',
-                            onPressed: () => confirmAndDeleteOrb(context, orb),
-                            icon: const Icon(Icons.delete_outline),
-                          ),
-                        ],
+                        ),
                       ),
                     ),
                   ),

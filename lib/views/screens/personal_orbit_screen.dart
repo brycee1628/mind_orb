@@ -100,7 +100,7 @@ class _PersonalOrbitScreenState extends State<PersonalOrbitScreen>
   _OrbBody _createBody(MindOrb orb, Rect field) {
     final radius = _radiusFor(orb, field);
     final angle = _random.nextDouble() * math.pi * 2;
-    final speed = _speedFor(orb.emotion);
+    const speed = _slowestSpeed;
     return _OrbBody(
       position: _spawn(field, radius),
       velocity: Offset(math.cos(angle) * speed, math.sin(angle) * speed),
@@ -129,16 +129,7 @@ class _PersonalOrbitScreenState extends State<PersonalOrbitScreen>
     return preferred;
   }
 
-  double _speedFor(EmotionType emotion) {
-    final base = switch (emotion) {
-      EmotionType.anger => 86.0,
-      EmotionType.joy => 62.0,
-      EmotionType.anxiety => 48.0,
-      EmotionType.sadness => 36.0,
-      EmotionType.calm => 26.0,
-    };
-    return base * (0.8 + _random.nextDouble() * 0.4);
-  }
+  static const _slowestSpeed = 26.0;
 
   Rect _playfieldFor(Size size, EdgeInsets padding) {
     const topChrome = 96.0;
